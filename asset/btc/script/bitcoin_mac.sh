@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# bitcoin环境搭建
+# 比特币环境搭建
 
 ## 源码下载
 #git clone https://github.com/bitcoin/bitcoin.git
@@ -14,4 +14,4 @@ brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config \
 ####  ```
 
 ## 编译源码
-./autogen.sh && ./configure && make
+./autogen.sh && ./configure && make -j 2

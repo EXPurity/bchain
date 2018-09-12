@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# bitcoin环境搭建
+# 比特币环境搭建
 
 eth0ip=$(ifconfig eth0 | grep 'inet ' | awk '{print $2}')
 
@@ -32,7 +32,7 @@ fi
 ## 源码下载
 mkdir -p .bitcoin && cd .bitcoin
 wget https://codeload.github.com/bitcoin/bitcoin/tar.gz/v$version \
-  && mv v0.16.2 bitcoin-$version.tar.gz && tar xvzf bitcoin-$version.tar.gz
+  && mv v$version bitcoin-$version.tar.gz && tar xvzf bitcoin-$version.tar.gz
 
 if (( 0 != $? )); then
   echo Failed to download https://codeload.github.com/bitcoin/bitcoin/tar.gz/v$version
@@ -43,10 +43,10 @@ fi
 ## 编译源码
 cd bitcoin-$version && ./autogen.sh \
   && ./configure --with-incompatible-bdb --without-gui --without-miniupnpc \
-  && make
+  && make -j 2
 
 if (( 0 != $? )); then
-  echo Failed to download https://codeload.github.com/bitcoin/bitcoin/tar.gz/v$version
+  echo Failed to compile source code!
   cd ../.. && rm -rf .bitcoin
   exit 1
 fi
@@ -79,11 +79,11 @@ rpcallowip=$eth0ip/16
 txindex=$txindex
 EOF
 
-mkdir -p ~/btc
-cp bitcoind.sh bitcoin.conf ~/btc
+mkdir -p ~/btc/chain
+cp bitcoind.sh bitcoin.conf runas.sh ~/btc
 if test -z "$(sudo grep btc /etc/passwd)"; then
-  sudo useradd -M -s /sbin/nologin -U btc
+  sudo useradd -d ~/btc -G $USER -s /usr/bin/bash -U btc
 fi
 sudo chown -R btc:btc ~/btc
-cd ~/bin
-sudo runuser btc -c "./bitcoind.sh start"
+cd ~/btc
+./runas.sh

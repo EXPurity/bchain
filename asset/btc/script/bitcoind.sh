@@ -2,7 +2,6 @@
 
 function start_bitcoind
 {
-  mkdir -p $PWD/chain
   bitcoind -conf=$PWD/bitcoin.conf -datadir=$PWD/chain -daemon
 }
 

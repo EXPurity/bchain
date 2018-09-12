@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# bitcoin环境搭建
+# 比特币环境搭建
 
 ## 源码下载
 #git clone https://github.com/bitcoin/bitcoin.git
@@ -11,4 +11,4 @@ apt install build-essential libtool autotools-dev automake pkg-config \
   libboost-all-dev libdb5.3++ libdb5.3++-dev libzmq3-dev
 
 ## 编译源码
-./autogen.sh && ./configure --with-incompatible-bdb --without-gui && make
+./autogen.sh && ./configure --with-incompatible-bdb --without-gui && make -j 2
