@@ -1,0 +1,32 @@
+Address
+rHfEVj6MDNo64kbSumep6GHgJaveJhFANt
+Secret
+saBNqPcXiBzmqQTDhUd36dHrna6kh
+Balance
+10,000 XRP
+
+{
+    "result": {
+        "account_id": "rBoY1fzJc9Kc51USNmVYCBBnog1wLneeCM",
+        "key_type": "secp256k1",
+        "master_key": "LUG DOG TRY HOLD GLUT MOD BILL FAN CHAT OVA MAP KERR",
+        "master_seed": "ssmnkH6q1YC9vxNedUrySA6pQZrkS",
+        "master_seed_hex": "4C7552189559025852D6B8CC08E54126",
+        "public_key": "aBPUqKjmWiKzZMYvSmti49nhGqUkbYzp7xa79be4TQ5wAfWvbJSb",
+        "public_key_hex": "02A43DC12C1EA5EA0624F3917925F1673A9939A5F5317BE456158270807469A058",
+        "status": "success"
+    }
+}
+
+{
+    "result": {
+        "account_id": "rNfqgvymPCg8N2J6Ab4yc27TU9djes9PzJ",
+        "key_type": "secp256k1",
+        "master_key": "DOVE NU MEAL NOAH TORN FREE FED ONUS CODY IRE HERO HOLD",
+        "master_seed": "ssQhqqvez4B14g2dot3d2Ah1xQGZi",
+        "master_seed_hex": "3273398FA42159130CE56EE2E4AA2576",
+        "public_key": "aBPmAThLSSiFdEePeDnR61SeiMsJjpAp4QG8xvz7p4PEWPg32VgR",
+        "public_key_hex": "02EF695E8853C50B913A23E38A8B63EF7463F3AF203FA30DC9EA2D1D86F94D6F96",
+        "status": "success"
+    }
+}
