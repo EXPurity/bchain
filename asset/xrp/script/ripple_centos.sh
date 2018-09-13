@@ -12,9 +12,9 @@ version=1.0.0
 
 
 ## 依赖项安装
-yum install -y gcc gcc-c++ cmake protobuf-compiler libprotobuf-devel openssl-libs
-mkdir -p .ripple && cd .ripple
-wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz \
+sudo yum install -y gcc gcc-c++ cmake protobuf-compiler libprotobuf-devel \
+  openssl-libs && mkdir -p .ripple && cd .ripple \
+  && wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz \
   && tar -xzf boost_1_67_0.tar.gz && cd boost_1_67_0 && ./bootstrap.sh \
   && ./b2 headers && ./b2 -j 2 && export BOOST_ROOT=$PWD
 
