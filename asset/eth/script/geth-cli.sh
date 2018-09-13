@@ -2,7 +2,9 @@
 
 argv=$*
 config=$PWD/ethereum.toml
-host=127.0.0.1:18545
+datadir=$(grep 'DataDir = ' $config | sed 's/DataDir = //')
+host=$(grep 'HTTPHost = ' $config | sed 's/HTTPHost = //')
+port=$(grep 'HTTPPort = ' $config | sed 's/HTTPPort = //')
 method=$1
 params=""
 
@@ -34,12 +36,12 @@ function call
     -H "Content-Type:application/json" \
     -X POST \
     -d "{\"jsonrpc\":\"2.0\",\"method\":\"$method\",\"params\":[$params],\"id\":1}" \
-    $host
+    http://$host:$port
 }
 
 function attach
 {
-  geth --config "$config" attach
+  geth --datadir "$datadir" attach
 }
 
 case "$1" in
