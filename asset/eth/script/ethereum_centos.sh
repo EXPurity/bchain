@@ -19,9 +19,6 @@ else
   wsport=8546
 fi
 
-datadir=$PWD/chain
-cachedir=$datadir/geth/ethash
-dagdir=$datadir/geth/ethahsh
 
 version=1.8.15
 
@@ -54,13 +51,24 @@ if (( 0 != $? )); then
   exit 1
 fi
 
+mkdir -p ~/bin
+cp build/bin/geth build/bin/ethkey ~/bin
+cd ../.. && rm -rf .ethereum
+
+mkdir -p ~/eth/chain && cd ~/eth
+
+datadir=$PWD/chain
+cachedir=$datadir/geth/ethash
+dagdir=$datadir/geth/ethahsh
+
+cd -
+
 cat > ethereum.toml << EOF
 [Eth]
 NetworkId = $networkid
 SyncMode = "$syncmode"
 LightPeers = 100
 DatabaseCache = 230
-GasPrice = 18000000000
 EnablePreimageRecording = false
 
 [Eth.Ethash]
@@ -117,11 +125,6 @@ Port = 8080
 Refresh = 5000000000
 EOF
 
-mkdir -p ~/bin
-cp build/bin/geth build/bin/ethkey ~/bin
-cd ../.. && rm -rf .ethereum
-
-mkdir -p ~/eth/chain
 cp ethereum.toml geth.sh gethd.sh runas.sh ~/eth
 if test -z "$(sudo grep eth /etc/passwd)"; then
   sudo useradd -d ~/eth -G $USER -s /usr/bin/bash -U eth
