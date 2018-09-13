@@ -122,7 +122,7 @@ cp build/bin/geth build/bin/ethkey ~/bin
 cd ../.. && rm -rf .ethereum
 
 mkdir -p ~/eth/chain
-cp ethereum.toml geth.sh runas.sh ~/eth
+cp ethereum.toml geth.sh gethd.sh runas.sh ~/eth
 if test -z "$(sudo grep eth /etc/passwd)"; then
   sudo useradd -d ~/eth -G $USER -s /usr/bin/bash -U eth
 fi
