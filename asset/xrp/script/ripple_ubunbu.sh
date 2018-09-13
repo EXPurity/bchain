@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# ripple环境搭建
+# 瑞波币环境搭建
 
 ## 源码下载
 #git clone https://github.com/ripple/rippled.git
