@@ -3,7 +3,7 @@
 argv=$*
 config=$PWD/ethereum.toml
 datadir=$(grep 'DataDir = ' $config | sed 's/DataDir = //')
-host=$(grep 'HTTPHost = ' $config | sed 's/HTTPHost = //')
+host=$(grep 'HTTPHost = ' $config | sed 's/HTTPHost = //' | sed 's/"//g')
 port=$(grep 'HTTPPort = ' $config | sed 's/HTTPPort = //')
 method=$1
 params=""
