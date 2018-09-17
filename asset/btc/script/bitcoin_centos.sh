@@ -4,18 +4,20 @@
 
 eth0ip=$(ifconfig eth0 | grep 'inet ' | awk '{print $2}')
 
-user=btc
-group=btc
 
 if test "testnet" == "$1"; then
   testnet=1
   txindex=1
   rpcport=18332
+  user=btctest
+  group=btctest
   datadir=btctest
 else
   testnet=0
   txindex=1
   rpcport=8332
+  user=btcmain
+  group=btcmain
   datadir=btcmain
 fi
 
@@ -82,6 +84,12 @@ rpcbind=$eth0ip
 rpcallowip=127.0.0.1
 rpcallowip=$eth0ip/16
 txindex=$txindex
+EOF
+
+cat > runas.sh << EOF
+#!/usr/bin/env bash
+
+sudo runuser $user -c 'export PATH=$PATH:../bin;./bitcoind.sh start'
 EOF
 
 mkdir -p ~/$datadir/chain
