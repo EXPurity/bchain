@@ -4,18 +4,19 @@
 
 eth0ip=$(ifconfig eth0 | grep 'inet ' | awk '{print $2}')
 
+user=btc
+group=btc
+
 if test "testnet" == "$1"; then
   testnet=1
   txindex=1
   rpcport=18332
-  user=btcmain
-  group=btcmain
+  datadir=btctest
 else
   testnet=0
   txindex=1
   rpcport=8332
-  user=btctest
-  group=btctest
+  datadir=btcmain
 fi
 
 rpcauth=bitcoin:82a6eedb5e1d83d75af321fefcab3e2\$f343e630bef6db1f1c9861c48bc654a462decbdb68d3550af163a70b76f246a1
@@ -55,7 +56,7 @@ if (( 0 != $? )); then
   exit 1
 fi
 
-sudo mkdir -p ~/bin
+mkdir -p ~/bin
 cp src/bitcoind src/bitcoin-cli src/bitcoin-tx ~/bin
 cd ../../ && rm -rf .bitcoin
 
@@ -83,11 +84,11 @@ rpcallowip=$eth0ip/16
 txindex=$txindex
 EOF
 
-mkdir -p ~/$user/chain
-cp bitcoind.sh bitcoin.conf runas.sh ~/$user
+mkdir -p ~/$datadir/chain
+cp bitcoind.sh bitcoin.conf runas.sh ~/$datadir
 if test -z "$(sudo grep $user /etc/passwd)"; then
-  sudo useradd -d ~/$user -G $USER -s /usr/bin/bash -U $group
+  sudo useradd -d ~/$datadir -G $USER -s /usr/bin/bash -U $user
 fi
-sudo chown -R $user:$group ~/$user
-cd ~/$user
+sudo chown -R $user:$group ~/$datadir
+cd ~/$datadir
 ./runas.sh
