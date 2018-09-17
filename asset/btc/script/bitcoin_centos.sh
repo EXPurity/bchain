@@ -8,10 +8,14 @@ if test "testnet" == "$1"; then
   testnet=1
   txindex=1
   rpcport=18332
+  user=btcmain
+  group=btcmain
 else
   testnet=0
   txindex=1
   rpcport=8332
+  user=btctest
+  group=btctest
 fi
 
 rpcauth=bitcoin:82a6eedb5e1d83d75af321fefcab3e2\$f343e630bef6db1f1c9861c48bc654a462decbdb68d3550af163a70b76f246a1
@@ -79,11 +83,11 @@ rpcallowip=$eth0ip/16
 txindex=$txindex
 EOF
 
-mkdir -p ~/btc/chain
-cp bitcoind.sh bitcoin.conf runas.sh ~/btc
-if test -z "$(sudo grep btc /etc/passwd)"; then
-  sudo useradd -d ~/btc -G $USER -s /usr/bin/bash -U btc
+mkdir -p ~/$user/chain
+cp bitcoind.sh bitcoin.conf runas.sh ~/$user
+if test -z "$(sudo grep $user /etc/passwd)"; then
+  sudo useradd -d ~/$user -G $USER -s /usr/bin/bash -U $group
 fi
-sudo chown -R btc:btc ~/btc
-cd ~/btc
+sudo chown -R $user:$group ~/$user
+cd ~/$user
 ./runas.sh

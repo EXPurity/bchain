@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 argv=$*
-#rpcconnect=127.0.0.1
-rpcconnect=47.96.111.40
+rpcconnect=127.0.0.1
+#rpcconnect=47.96.111.40
 rpcwallet=""
 rpcport=18332
 rpcuser=bitcoin
@@ -72,4 +72,3 @@ call $argv
 # sendmany <account> <addresses:amounts> [confirmations] [comment]
 # sendtoaddress <address> <amount> [comment] [comment to]
 # validateaddress <address> 验证指定地址
-
