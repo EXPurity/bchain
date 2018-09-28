@@ -4,7 +4,6 @@
 
 eth0ip=$(ifconfig eth0 | grep 'inet ' | awk '{print $2}')
 
-
 if test "testnet" == "$1"; then
   testnet=1
   txindex=1
@@ -26,7 +25,8 @@ rpcuser=bitcoin
 rpcpwd=G3aNIjgOOp383UI5LBCRCJwe8wsFthXzUqA3yvVBd1M\=
 rpcconnect=127.0.0.1
 
-version=0.16.2
+preversion=0.16.2
+version=0.16.3
 
 ## 依赖项安装
 sudo yum -y install gcc-c++ libtool make autoconf automake openssl-devel libevent-devel boost-devel libdb-devel libdb-cxx-devel python3
@@ -59,6 +59,15 @@ if (( 0 != $? )); then
 fi
 
 mkdir -p ~/bin
+if [ -x ~/bin/bitcoind ]; then
+  mv ~/bin/bitcoind ~/bin/bitcoind-$preversion
+fi
+if [ -x ~/bin/bitcoin-cli ]; then
+  mv ~/bin/bitcoin-cli ~/bin/bitcoin-cli-$preversion
+fi
+if [ -x ~/bin/bitcoin-tx ]; then
+  mv ~/bin/bitcoin-tx ~/bin/bitcoind-tx-$preversion
+fi
 cp src/bitcoind src/bitcoin-cli src/bitcoin-tx ~/bin
 cd ../../ && rm -rf .bitcoin
 
@@ -93,7 +102,7 @@ sudo runuser $user -c 'export PATH=$PATH:../bin;./bitcoind.sh start'
 EOF
 
 mkdir -p ~/$datadir/chain
-cp bitcoind.sh bitcoin.conf runas.sh ~/$datadir
+sudo cp bitcoin-cli.sh bitcoind.sh bitcoin.conf runas.sh ~/$datadir
 if test -z "$(sudo grep $user /etc/passwd)"; then
   sudo useradd -d ~/$datadir -G $USER -s /usr/bin/bash -U $user
 fi
