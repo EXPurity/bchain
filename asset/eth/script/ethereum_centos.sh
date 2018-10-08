@@ -13,15 +13,21 @@ if test "testnet" == "$1"; then
   networkid=3
   rpcport=18545
   wsport=18546
+  user=eth
+  group=eth
+  datadir=eth
   testnet="--testnet"
 else
   networkid=1
   rpcport=8545
   wsport=8546
+  user=eth
+  group=eth
+  datadir=eth
   testnet=
 fi
 
-
+preversion=1.8.14
 version=1.8.15
 
 ## 依赖项安装
@@ -54,16 +60,19 @@ if (( 0 != $? )); then
 fi
 
 mkdir -p ~/bin
+if [ -x ~/bin/geth ]; then
+  mv ~/bin/geth ~/bin/geth-$preversion
+fi
+if [ -x ~/bin/ethkey ]; then
+  mv ~/bin/ethkey ~/bin/ethkey-$preversion
+fi
 cp build/bin/geth build/bin/ethkey ~/bin
 cd ../.. && rm -rf .ethereum
 
-mkdir -p ~/eth/chain && cd ~/eth
+mkdir -p ~/$datadir/chain && cd ~/$datadir
 
-datadir=$PWD/chain
-cachedir=$datadir/geth/ethash
-dagdir=$datadir/geth/ethahsh
-
-cd -
+cachedir=$PWD/chain/geth/ethash
+dagdir=$PWD/chain/geth/ethahsh
 
 cat > ethereum.toml << EOF
 [Eth]
@@ -102,7 +111,7 @@ MaxMessageSize = 1048576
 MinimumAcceptedPOW = 2e-01
 
 [Node]
-DataDir = "$datadir"
+DataDir = "$PWD/chain"
 UseLightweightKDF = true
 IPCPath = "geth.ipc"
 HTTPHost = "$rpcaddr"
@@ -127,16 +136,27 @@ Port = 8080
 Refresh = 5000000000
 EOF
 
+cat > runas.sh << EOF
+#!/usr/bin/env bash
+
+sudo runuser $user -c 'export PATH=$PATH:../bin;./gethd.sh start'
+EOF
+
 cat > geth.sh << EOF
 #!/usr/bin/env bash
 
-geth --networkid $networkid $testnet --config $PWD/ethereum.toml
+geth --config $PWD/ethereum.toml --datadir $PWD/chain \\
+  --ethash.cachedir $PWD/chain/geth/ethash \\
+  --ethash.dagdir $PWD/chain/geth/ethahsh \\
+  --networkid $networkid $testnet
 EOF
 
-cp ethereum.toml geth.sh gethd.sh runas.sh ~/eth
+cd -
+
+sudo cp ethereum.toml geth.sh gethd.sh runas.sh ~/$datadir
 if test -z "$(sudo grep eth /etc/passwd)"; then
-  sudo useradd -d ~/eth -G $USER -s /usr/bin/bash -U eth
+  sudo useradd -d ~/$user -G $USER -s /usr/bin/bash -U $user
 fi
-sudo chown -R eth:eth ~/eth
-cd ~/eth
+sudo chown -R $user:$group ~/$datadir
+cd ~/$datadir
 ./runas.sh
