@@ -13,10 +13,12 @@ if test "testnet" == "$1"; then
   networkid=3
   rpcport=18545
   wsport=18546
+  testnet="--testnet"
 else
   networkid=1
   rpcport=8545
   wsport=8546
+  testnet=
 fi
 
 
@@ -123,6 +125,12 @@ EnableMsgEvents = false
 Host = "localhost"
 Port = 8080
 Refresh = 5000000000
+EOF
+
+cat > geth.sh << EOF
+#!/usr/bin/env bash
+
+geth --networkid $networkid $testnet --config $PWD/ethereum.toml
 EOF
 
 cp ethereum.toml geth.sh gethd.sh runas.sh ~/eth
