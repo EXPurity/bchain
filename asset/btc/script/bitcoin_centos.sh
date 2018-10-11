@@ -25,8 +25,8 @@ rpcuser=bitcoin
 rpcpwd=G3aNIjgOOp383UI5LBCRCJwe8wsFthXzUqA3yvVBd1M\=
 rpcconnect=127.0.0.1
 
-preversion=0.16.2
-version=0.16.3
+preversion=0.16.3
+version=0.17.0
 
 ## 依赖项安装
 sudo yum -y install gcc-c++ libtool make autoconf automake openssl-devel libevent-devel boost-devel libdb-devel libdb-cxx-devel python3
@@ -101,7 +101,7 @@ cat > runas.sh << EOF
 sudo runuser $user -c 'export PATH=$PATH:../bin;./bitcoind.sh start'
 EOF
 
-mkdir -p ~/$datadir/chain
+sudo mkdir -p ~/$datadir/chain
 sudo cp bitcoin-cli.sh bitcoind.sh bitcoin.conf runas.sh ~/$datadir
 if test -z "$(sudo grep $user /etc/passwd)"; then
   sudo useradd -d ~/$datadir -G $USER -s /usr/bin/bash -U $user
