@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# 以太坊环境搭建
-
 eth0ip=$(ifconfig eth0 | grep 'inet ' | awk '{print $2}')
 
 rpcaddr=$eth0ip
@@ -15,7 +13,7 @@ if test "testnet" == "$1"; then
   wsport=18546
   user=eth
   group=eth
-  datadir=eth
+  datadir=$HOME/eth
   testnet="--testnet"
 else
   networkid=1
@@ -23,7 +21,7 @@ else
   wsport=8546
   user=eth
   group=eth
-  datadir=eth
+  datadir=$HOME/eth
   testnet=
 fi
 
@@ -69,10 +67,10 @@ fi
 cp build/bin/geth build/bin/ethkey ~/bin
 cd ../.. && rm -rf .ethereum
 
-mkdir -p ~/$datadir/chain && cd ~/$datadir
+mkdir -p $datadir/chain
 
-cachedir=$PWD/chain/geth/ethash
-dagdir=$PWD/chain/geth/ethahsh
+cachedir=$datadir/chain/geth/ethash
+dagdir=$datadir/chain/geth/ethahsh
 
 cat > ethereum.toml << EOF
 [Eth]
@@ -111,7 +109,7 @@ MaxMessageSize = 1048576
 MinimumAcceptedPOW = 2e-01
 
 [Node]
-DataDir = "$PWD/chain"
+DataDir = "$datadir/chain"
 UseLightweightKDF = true
 IPCPath = "geth.ipc"
 HTTPHost = "$rpcaddr"
@@ -145,18 +143,16 @@ EOF
 cat > geth.sh << EOF
 #!/usr/bin/env bash
 
-geth --config $PWD/ethereum.toml --datadir $PWD/chain \\
-  --ethash.cachedir $PWD/chain/geth/ethash \\
-  --ethash.dagdir $PWD/chain/geth/ethahsh \\
+geth --config $datadir/ethereum.toml --datadir $datadir/chain \\
+  --ethash.cachedir $datadir/chain/geth/ethash \\
+  --ethash.dagdir $datadir/chain/geth/ethahsh \\
   --networkid $networkid $testnet
 EOF
 
-cd -
-
-sudo cp ethereum.toml geth.sh gethd.sh runas.sh ~/$datadir
+sudo cp ethereum.toml geth-cli.sh geth.sh gethd.sh runas.sh $datadir
 if test -z "$(sudo grep eth /etc/passwd)"; then
   sudo useradd -d ~/$user -G $USER -s /usr/bin/bash -U $user
 fi
-sudo chown -R $user:$group ~/$datadir
-cd ~/$datadir
+sudo chown -R $user:$group $datadir
+cd $datadir
 ./runas.sh

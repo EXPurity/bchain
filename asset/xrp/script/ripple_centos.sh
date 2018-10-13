@@ -10,7 +10,6 @@ fi
 
 version=1.0.0
 
-
 ## 依赖项安装
 sudo yum install -y gcc gcc-c++ cmake protobuf-compiler libprotobuf-devel \
   openssl-libs && mkdir -p .ripple && cd .ripple \
@@ -80,8 +79,6 @@ protocol = ws
 #port = 5005
 #ip = 127.0.0.1
 #protocol = wss
-
-#-------------------------------------------------------------------------------
 
 [node_size]
 medium
