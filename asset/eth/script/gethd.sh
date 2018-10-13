@@ -7,7 +7,7 @@ function geth_start
 
 function geth_stop
 {
-  pid=$(ps -e | grep 'geth ' | awk '{print $1}')
+  pid=$(ps aux | grep 'geth ' | sed '/grep/d' | awk '{print $2}')
   if test "" != "$pid"; then
     sudo kill -SIGINT $pid
   fi
