@@ -4,7 +4,7 @@
 
 user=xmr
 group=xmr
-root=xmr
+root=$HOME
 
 version=0.13.0.4
 app_tar=monero-linux-x64-v$version.tar.bz2
@@ -19,11 +19,11 @@ if (( 0 != $? )); then
   exit 1
 fi
 
-mkdir -p ~/bin
-cp -v monero-v$version/* ~/bin && cd .. && rm -rf .monero_
+mkdir -p $root/bin
+cp -v monero-v$version/* $root/bin && cd .. && rm -rf .monero_
 
-sudo mkdir -p ~/$root/chain/wallet
+sudo mkdir -p $root/$user/chain/wallet
 if test -z "$(sudo grep $user /etc/passwd)"; then
-  sudo useradd -d ~/$root -G $USER -s /usr/bin/bash -U $user
+  sudo useradd -d $root/$user -G $USER -s /usr/bin/bash -U $user
 fi
-sudo chown -R $user:$group ~/$root
+sudo chown -R $user:$group $root/$user
