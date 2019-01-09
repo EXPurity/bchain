@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 argv=$*
-#host=127.0.0.1:18545
-host=47.96.111.40:18545
+host=127.0.0.1:18545
+#host=47.96.111.40:18545
 method=$1
 params=""
 
